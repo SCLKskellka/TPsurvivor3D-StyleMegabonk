@@ -6,6 +6,16 @@
 #include "Item.h"
 #include "Weapon.generated.h"
 
+UENUM(BlueprintType)
+enum class EGrowingStats : uint8
+{
+	Damage UMETA(DisplayName="Damage", ToolTip="Increase weapon's damage (value)"),
+	AttackFrequency UMETA(DisplayName="AttackFrequency", ToolTip="Increase weapon's attack frequency (%)"),
+	CritDamage UMETA(DisplayName="CritDamage", ToolTip="Increase weapon's critical damage (%)"),
+	ProjectileSize UMETA(DisplayName="ProjectileSize", ToolTip="Increase projectile's size (%)"),
+	ProjectileCount UMETA(DisplayName="ProjectileCount", ToolTip="Increase number of projectile (value)")
+};
+
 UCLASS()
 class SURVIVOR3D_API AWeapon : public AItem
 {
@@ -14,18 +24,20 @@ class SURVIVOR3D_API AWeapon : public AItem
 public:
 	// Sets default values for this actor's properties
 	AWeapon();
-	UPROPERTY(BlueprintReadWrite, Category="Stats")
-	int Damage;
-	UPROPERTY(BlueprintReadWrite, Category="Stats")
-	float AttackFrequency;
-	UPROPERTY(BlueprintReadWrite, Category="Stats")
-	float CritDamage;
-	UPROPERTY(BlueprintReadWrite, Category="Stats")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Stats")
 	int Level;
-	UPROPERTY(BlueprintReadWrite, Category="Stats")
-	int LevelGrowth;
-	UPROPERTY(BlueprintReadWrite, Category="Stats")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Stats")
+	int Damage;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Stats")
+	float AttackFrequency;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Stats")
+	float CritDamage;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Stats")
 	float ProjectileSize;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Stats")
+	float ProjectileCount;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Stats")
+	TMap<EGrowingStats, float> GrowingStats;
 	
 protected:
 	// Called when the game starts or when spawned

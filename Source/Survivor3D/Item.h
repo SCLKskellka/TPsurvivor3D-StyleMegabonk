@@ -14,11 +14,11 @@ class SURVIVOR3D_API AItem : public AActor
 public:
 	// Sets default values for this actor's properties
 	AItem();
-	UPROPERTY(BlueprintReadWrite, Category="Property")
-	TString<char> Name;
-	UPROPERTY(BlueprintReadWrite, Category="Property")
-	TString<char> Description;
-	UPROPERTY(BlueprintReadWrite, Category="Property")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Property")
+	FString Name;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Property")
+	FString Description;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Property")
 	bool IsUnlock;
 	
 
