@@ -3,21 +3,25 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Item.h"
-#include "Book.generated.h"
+#include "BehaviorTree/BlackboardData.h"
+#include "GameFramework/Actor.h"
+#include "EnemyManager.generated.h"
 
 UCLASS()
-class SURVIVOR3D_API ABook : public AItem
+class SURVIVOR3D_API AEnemyManager : public AActor
 {
 	GENERATED_BODY()
 
 public:
 	// Sets default values for this actor's properties
-	ABook();
+	AEnemyManager();
+	UPROPERTY(EditAnywhere, Blueprintable)
+	TArray<UBlackboardData*> EnemyData;
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+	
 
 public:
 	// Called every frame
