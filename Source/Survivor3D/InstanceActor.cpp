@@ -12,6 +12,7 @@ AInstanceActor::AInstanceActor()
 	InstancedStaticMeshComponent = CreateDefaultSubobject<UInstancedStaticMeshComponent>(TEXT("InstancedStaticMesh"));
 	SetRootComponent(InstancedStaticMeshComponent);
 	InstancedStaticMeshComponent->SetMobility (EComponentMobility::Static);
+	EnemyManager = CreateDefaultSubobject<UEnemyManager>(TEXT("EnemyManager"));
 }
 
 void AInstanceActor::OnConstruction(const FTransform& Transform)
@@ -20,13 +21,15 @@ void AInstanceActor::OnConstruction(const FTransform& Transform)
 	
 	if (InstancedStaticMeshComponent->GetInstanceCount()==0)
 	{
-		TArray<FTransform> Transforms;
+		EnemyManager->EnemyInit();
+		
+		/*TArray<FTransform> Transforms;
 		Transforms.Empty(10);
 		for (int Index = 0; Index<10; Index++)
 		{
 			Transforms.Add(FTransform(FVector(100.f * Index,0.f,0.f)));
 		}
-		InstancedStaticMeshComponent->AddInstances(Transforms, false);
+		InstancedStaticMeshComponent->AddInstances(Transforms, false);*/
 	}
 }
 

@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "EnemyManager.h"
 #include "GameFramework/Actor.h"
 #include "InstanceActor.generated.h"
 
@@ -23,5 +24,8 @@ protected:
 protected:
 	UPROPERTY(VisibleAnywhere)
 	UInstancedStaticMeshComponent* InstancedStaticMeshComponent;
+	
+	UPROPERTY(VisibleAnywhere)
+	UEnemyManager* EnemyManager;
 #pragma endregion
 };

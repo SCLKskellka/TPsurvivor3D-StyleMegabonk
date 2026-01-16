@@ -1,26 +1,46 @@
-﻿// Fill out your copyright notice in the Description page of Project Settings.
-
-
+﻿
 #include "EnemyManager.h"
 
 
-// Sets default values
-AEnemyManager::AEnemyManager()
+UEnemyManager::UEnemyManager()
 {
-	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryComponentTick.bCanEverTick = true;
+
 }
 
-// Called when the game starts or when spawned
-void AEnemyManager::BeginPlay()
+
+void UEnemyManager::BeginPlay()
 {
 	Super::BeginPlay();
 	
 }
 
-// Called every frame
-void AEnemyManager::Tick(float DeltaTime)
+void UEnemyManager::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
-	Super::Tick(DeltaTime);
+	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+}
+
+void UEnemyManager::EnemyInit()
+{
+	//AllEnemyData.Empty(Squad->GetKeys().Max());
+	//Squad->Get
+	/*for (int i = 0; i < Squad->GetKeys().Max(); ++i)
+	{
+		AllEnemyData[i] = Squad->GetClass()[i];
+	}*/
+	//Squad->GetKeys().Max();
+}
+
+void UEnemyManager::EnemyMovement()
+{
+	
+}
+
+void UEnemyManager::TakeDamage()
+{
+}
+
+void UEnemyManager::UpdateUI()
+{
 }
 
