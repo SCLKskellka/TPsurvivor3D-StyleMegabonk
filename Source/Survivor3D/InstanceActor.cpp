@@ -21,7 +21,7 @@ void AInstanceActor::OnConstruction(const FTransform& Transform)
 	
 	if (InstancedStaticMeshComponent->GetInstanceCount()==0)
 	{
-		EnemyManager->EnemyInit();
+		EnemyManager->EnemySpawnInit();
 		
 		/*TArray<FTransform> Transforms;
 		Transforms.Empty(10);

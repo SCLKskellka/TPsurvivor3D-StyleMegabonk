@@ -1,6 +1,8 @@
 ﻿
 #include "EnemyManager.h"
 
+#include "BehaviorTree/BlackboardComponent.h"
+
 
 UEnemyManager::UEnemyManager()
 {
@@ -20,13 +22,14 @@ void UEnemyManager::TickComponent(float DeltaTime, ELevelTick TickType, FActorCo
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 }
 
-void UEnemyManager::EnemyInit()
+void UEnemyManager::EnemySpawnInit()
 {
-	//AllEnemyData.Empty(Squad->GetKeys().Max());
-	//Squad->Get
-	/*for (int i = 0; i < Squad->GetKeys().Max(); ++i)
+	AController::GetPawn()->GetActorLocation();
+	/*AllEnemyData.Empty(BlackBoardComponent->GetNumKeys());
+	BlackBoardComponent->
+	for (int i = 0; i < BlackBoardComponent->GetNumKeys(); ++i)
 	{
-		AllEnemyData[i] = Squad->GetClass()[i];
+		AllEnemyData[i] = BlackBoardComponent->GetClass()[i];
 	}*/
 	//Squad->GetKeys().Max();
 }
@@ -36,7 +39,7 @@ void UEnemyManager::EnemyMovement()
 	
 }
 
-void UEnemyManager::TakeDamage()
+void UEnemyManager::TakeDamage(FVector3d impactLocation, float damage)
 {
 }
 
