@@ -2,7 +2,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "InstanceActor.h"
 #include "BehaviorTree/BlackboardData.h"
 #include "Components/ActorComponent.h"
 #include "EnemyManager.generated.h"
@@ -18,6 +17,12 @@ public:
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UBlackboardComponent* BlackBoardComponent;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float MinOffset;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float MaxOffset;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FVector2D RandomSpawnTime;
