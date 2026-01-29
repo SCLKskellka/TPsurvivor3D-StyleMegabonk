@@ -19,18 +19,12 @@ AEnemySpawnerSystem::AEnemySpawnerSystem()
 void AEnemySpawnerSystem::OnConstruction(const FTransform& Transform)
 {
 	Super::OnConstruction(Transform);
-	if (UGameplayStatics::GetPlayerPawn(this, 0) != nullptr) EnemyInitiation();
 }
 
 // Called every frame
 void AEnemySpawnerSystem::Tick(const float DeltaSecond)
 {
 	Super::Tick(DeltaSecond);
-	if (UGameplayStatics::GetPlayerPawn(this, 0) != nullptr && 
-		InstancedStaticMeshComponent->GetInstanceCount() ==0)
-	{
-		EnemyInitiation();
-	}
 }
 
 void AEnemySpawnerSystem::SpawnStaticMesh()
@@ -38,15 +32,15 @@ void AEnemySpawnerSystem::SpawnStaticMesh()
 	TArray<FTransform> Transforms;
 	for (int i = 0; i < Enemies.Num(); i++)
 	{
-		if (Enemies[i]->EnemyMesh == nullptr)
+		if (Enemies[i]->EnemyMesh != nullptr)
 		{
 			InstancedStaticMeshComponent->SetStaticMesh(Enemies[i]->EnemyMesh);
-			InstancedStaticMeshComponent->AddInstance(FTransform(FVector(Enemies[i]->Position)), false);
+			InstancedStaticMeshComponent->AddInstance(FTransform(Enemies[i]->Position), false);
 		}
 	}
 }
 
-void AEnemySpawnerSystem::EnemyInitiation()
+void AEnemySpawnerSystem::EnemySetup()
 {
 	if (!Enemy.IsNull())
 	{
@@ -65,26 +59,28 @@ void AEnemySpawnerSystem::EnemyInitiation()
 			}
 			else
 			{
-				float xPos = FMath::RandRange( PlayerLocation.X - MinOffset,
+				float xPos = FMath::RandRange( PlayerLocation.X + MinOffset,
 					 PlayerLocation.X + MaxOffset );
-				float yPos = FMath::RandRange( PlayerLocation.Y - MinOffset,
+				float yPos = FMath::RandRange( PlayerLocation.Y + MinOffset,
 					 PlayerLocation.Y + MaxOffset );
 				FVector3d newLocation =  FVector3d(xPos,yPos, PlayerLocation.Z);
 				Enemies[i]->Position = newLocation;
 			}
-		
 		}
 		SpawnStaticMesh();
 	}
 }
 
-void AEnemySpawnerSystem::EnemyMovement()
+void AEnemySpawnerSystem::EnemiesMovements()
 {
-	printf("move");
+	// direction: PlayerLocation - Enemies[i]->Position -> normalize
+	//position += direction * speed;
+	FVector3d PlayerLocation = UGameplayStatics::GetPlayerPawn(this, 0)->GetActorLocation();
+	for (int i = 0; i < Enemies.Max(); i++)
+	{
+		Enemies[i]->Position = Enemies[i]->Position + (PlayerLocation-Enemies[i]->Position).Normalize() * Enemies[i]->Speed;
+		
+	}
 }
 
-void AEnemySpawnerSystem::TakeDamageBy(FVector3d impactLocation, float damage)
-{
-	printf("hurt");
-}
 
