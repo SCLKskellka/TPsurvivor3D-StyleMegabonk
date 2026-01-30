@@ -25,6 +25,7 @@ void AEnemySpawnerSystem::OnConstruction(const FTransform& Transform)
 void AEnemySpawnerSystem::Tick(const float DeltaSecond)
 {
 	Super::Tick(DeltaSecond);
+	EnemiesMovements();
 }
 
 void AEnemySpawnerSystem::SpawnStaticMesh()
@@ -76,10 +77,18 @@ void AEnemySpawnerSystem::EnemiesMovements()
 	// direction: PlayerLocation - Enemies[i]->Position -> normalize
 	//position += direction * speed;
 	FVector3d PlayerLocation = UGameplayStatics::GetPlayerPawn(this, 0)->GetActorLocation();
+	
 	for (int i = 0; i < Enemies.Max(); i++)
 	{
-		Enemies[i]->Position = Enemies[i]->Position + (PlayerLocation-Enemies[i]->Position).Normalize() * Enemies[i]->Speed;
 		
+	}
+}
+
+void AEnemySpawnerSystem::PlayerTarget()
+{
+	FVector3d PlayerLocation = UGameplayStatics::GetPlayerPawn(this, 0)->GetActorLocation();
+	for (int i = 0; i < Enemies.Max(); i++)
+	{
 	}
 }
 

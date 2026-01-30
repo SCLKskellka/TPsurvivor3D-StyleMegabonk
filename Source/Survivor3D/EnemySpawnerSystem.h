@@ -37,6 +37,9 @@ public:
 	
 	UFUNCTION(BlueprintCallable)
 	void EnemiesMovements();
+	
+	UFUNCTION(BlueprintCallable)
+	void PlayerTarget();
 
 	
 protected:
