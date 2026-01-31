@@ -3,6 +3,7 @@
 
 #include "EnemyData.h"
 #include "Components/InstancedStaticMeshComponent.h"
+#include "GameFramework/Character.h"
 #include "Kismet/GameplayStatics.h"
 
 
@@ -21,11 +22,17 @@ void AEnemySpawnerSystem::OnConstruction(const FTransform& Transform)
 	Super::OnConstruction(Transform);
 }
 
+void AEnemySpawnerSystem::BeginPlay()
+{
+	Super::BeginPlay();
+	EnemySetup();
+}
+
 // Called every frame
 void AEnemySpawnerSystem::Tick(const float DeltaSecond)
 {
 	Super::Tick(DeltaSecond);
-	EnemiesMovements();
+	EnemiesMovements(DeltaSecond);
 }
 
 void AEnemySpawnerSystem::SpawnStaticMesh()
@@ -72,23 +79,32 @@ void AEnemySpawnerSystem::EnemySetup()
 	}
 }
 
-void AEnemySpawnerSystem::EnemiesMovements()
+void AEnemySpawnerSystem::EnemiesMovements(const float DeltaSecond)
 {
-	// direction: PlayerLocation - Enemies[i]->Position -> normalize
-	//position += direction * speed;
-	FVector3d PlayerLocation = UGameplayStatics::GetPlayerPawn(this, 0)->GetActorLocation();
+	if(UGameplayStatics::GetPlayerCharacter(GetWorld(),0))
+	{
+		FVector3d PlayerLocation = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)->GetActorLocation();
 	
-	for (int i = 0; i < Enemies.Max(); i++)
-	{
-		
-	}
-}
+		for (int32 i = 0; i < InstancedStaticMeshComponent->GetInstanceCount(); i++)
+		{
+			FTransform InstanceTransform;
+			InstancedStaticMeshComponent->GetInstanceTransform(i, InstanceTransform, true);
 
-void AEnemySpawnerSystem::PlayerTarget()
-{
-	FVector3d PlayerLocation = UGameplayStatics::GetPlayerPawn(this, 0)->GetActorLocation();
-	for (int i = 0; i < Enemies.Max(); i++)
-	{
+			Enemies[i]->Position = InstanceTransform.GetLocation();
+			FVector Direction = (PlayerLocation - Enemies[i]->Position).GetSafeNormal();
+
+			Enemies[i]->Position += Direction * Enemies[i]->Speed * DeltaSecond;
+			InstanceTransform.SetLocation(Enemies[i]->Position);
+		
+			InstancedStaticMeshComponent->UpdateInstanceTransform(
+				i,
+				InstanceTransform,
+				true,   // world space
+				false,  // pas de rendu immédiat
+				true    // collision update
+			);
+		}
+		InstancedStaticMeshComponent->MarkRenderStateDirty(); // update rendu une seule fois
 	}
 }
 

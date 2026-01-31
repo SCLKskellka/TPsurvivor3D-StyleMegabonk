@@ -15,33 +15,26 @@ class SURVIVOR3D_API AEnemySpawnerSystem : public AActor
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Enemy")
 	float MinOffset;
-	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Enemy")
 	float MaxOffset;
-	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Enemy")
 	FVector2D RandomSpawnTime;
-	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta=(RowType="EnemyData"), Category="Enemy")
 	FDataTableRowHandle Enemy;
 	
 	AEnemySpawnerSystem();
 	
 	virtual void OnConstruction(const FTransform& Transform) override;
+	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaSecond) override;
+	
 	UFUNCTION(BlueprintCallable)
 	void SpawnStaticMesh();
-	
 	UFUNCTION(BlueprintCallable)
 	void EnemySetup();
-	
 	UFUNCTION(BlueprintCallable)
-	void EnemiesMovements();
-	
-	UFUNCTION(BlueprintCallable)
-	void PlayerTarget();
+	void EnemiesMovements(const float DeltaSecond);
 
-	
 protected:
 	
 	TArray<FEnemyData*> Enemies;
