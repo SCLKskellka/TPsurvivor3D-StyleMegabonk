@@ -5,11 +5,11 @@
 #include "CoreMinimal.h"
 #include "EnemyData.h"
 #include "Components/ActorComponent.h"
-#include "EnemyTargeting.generated.h"
+#include "PlayerShootingSystem.generated.h"
 
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
-class SURVIVOR3D_API UEnemyTargeting : public UActorComponent
+class SURVIVOR3D_API UPlayerShootingSystem : public UActorComponent
 {
 	GENERATED_BODY()
 
@@ -18,7 +18,7 @@ public:
 	FDataTableRowHandle EnemyData;
 	
 	// Sets default values for this component's properties
-	UEnemyTargeting();
+	UPlayerShootingSystem();
 
 protected:
 	TArray<FEnemyData*> EnemiesData;
@@ -30,7 +30,11 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType,
 	                           FActorComponentTickFunction* ThisTickFunction) override;
+	UFUNCTION(BlueprintCallable)
+	FEnemyData SearchClosestEnemy();
 	
-private:
-	FEnemyData* SearchClosestEnemy();
+	UFUNCTION(BlueprintCallable)
+	void Shoot(FVector TargetPosition);
+	
+	
 };

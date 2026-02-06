@@ -1,16 +1,18 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "EnemyTargeting.h"
+#include "PlayerShootingSystem.h"
 
 #include "EnemyData.h"
+#include "Projectile.h"
+#include "Chaos/Deformable/ChaosDeformableSolverProxy.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Runtime/Engine/Internal/Kismet/BlueprintTypeConversions.h"
 
 
 // Sets default values for this component's properties
-UEnemyTargeting::UEnemyTargeting()
+UPlayerShootingSystem::UPlayerShootingSystem()
 {
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
@@ -23,7 +25,7 @@ UEnemyTargeting::UEnemyTargeting()
 
 
 // Called when the game starts
-void UEnemyTargeting::BeginPlay()
+void UPlayerShootingSystem::BeginPlay()
 {
 	Super::BeginPlay();
 
@@ -33,14 +35,14 @@ void UEnemyTargeting::BeginPlay()
 
 
 // Called every frame
-void UEnemyTargeting::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
+void UPlayerShootingSystem::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
 	// ...
 }
 
-FEnemyData* UEnemyTargeting::SearchClosestEnemy()
+FEnemyData UPlayerShootingSystem::SearchClosestEnemy()
 {
 	FEnemyData* ClosestEnemy = EnemiesData[0];
 	FVector3d PlayerLocation = UGameplayStatics::GetPlayerPawn(this, 0)->GetActorLocation();
@@ -52,6 +54,14 @@ FEnemyData* UEnemyTargeting::SearchClosestEnemy()
 			ClosestEnemy = EnemiesData[i];
 		}
 	}
-	return ClosestEnemy;
+	return *ClosestEnemy;
+}
+
+void UPlayerShootingSystem::Shoot(FVector TargetPosition)
+{
+	FVector3d PlayerLocation = UGameplayStatics::GetPlayerPawn(this, 0)->GetActorLocation();
+	FVector3d ProjectileOffset = (PlayerLocation - TargetPosition).GetSafeNormal()*1.5;
+	
+	GetWorld()->SpawnActor<AProjectile>();
 }
 
