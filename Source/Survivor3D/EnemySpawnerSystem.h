@@ -3,15 +3,15 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "DataManager.h"
 #include "EnemyData.h"
 #include "GameFramework/Actor.h"
 #include "EnemySpawnerSystem.generated.h"
 
 UCLASS()
-class SURVIVOR3D_API AEnemySpawnerSystem : public AActor
+class SURVIVOR3D_API AEnemySpawnerSystem : public ADataManager
 {
 	GENERATED_BODY()
-
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Enemy")
 	float MinOffset;
