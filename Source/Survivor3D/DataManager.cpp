@@ -3,24 +3,16 @@
 
 #include "DataManager.h"
 
-
-// Sets default values
-ADataManager::ADataManager()
+void UDataManager::Initialize(FSubsystemCollectionBase& Collection)
 {
-	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	Super::Initialize(Collection);
 }
 
-// Called when the game starts or when spawned
-void ADataManager::BeginPlay()
+void UDataManager::Deinitialize()
 {
-	Super::BeginPlay();
-	
+	Super::Deinitialize();
 }
 
-// Called every frame
-void ADataManager::Tick(float DeltaTime)
+void UDataManager::CheckDamage()
 {
-	Super::Tick(DeltaTime);
 }
-

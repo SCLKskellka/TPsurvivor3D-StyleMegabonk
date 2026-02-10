@@ -21,5 +21,8 @@ struct SURVIVOR3D_API FEnemyData: public FTableRowBase
 	float Speed;
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	float DamageRange;
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	UStaticMesh* EnemyMesh;
 };

@@ -16,7 +16,8 @@ class SURVIVOR3D_API UPlayerShootingSystem : public UActorComponent
 public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta=(RowType="EnemyData"), Category="EnemyData")
 	FDataTableRowHandle EnemyData;
-	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta=(RowType="ProjectileData"), Category="Player")
+	FDataTableRowHandle ProjectileData;
 	// Sets default values for this component's properties
 	UPlayerShootingSystem();
 
