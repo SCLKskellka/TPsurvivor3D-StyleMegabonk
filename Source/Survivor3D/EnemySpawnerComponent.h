@@ -20,6 +20,7 @@ public:
 	UEnemySpawnerComponent();
 protected:
 	TArray<FEnemyData*> EnemyTypeData;
+	TArray<FEnemyData*> Enemies;
 	// Called when the game starts
 	virtual void BeginPlay() override;
 public:

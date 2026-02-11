@@ -2,10 +2,9 @@
 
 
 #include "EnemySpawnerComponent.h"
-
 #include "Components/InstancedStaticMeshComponent.h"
-#include "GameFramework/Character.h"
 #include "Kismet/GameplayStatics.h"
+#include "GameFramework/Character.h"
 
 
 // Sets default values for this component's properties
@@ -37,7 +36,7 @@ void UEnemySpawnerComponent::MeshSetup()
 		float QttToSpawn =  FMath::RandRange(RandomSpawnQttRange.X, RandomSpawnQttRange.Y);
 		for (int i = 0; i < QttToSpawn; i++)
 		{
-			DataManager->LivingEnemiesData.Add(const_cast<TArray<FEnemyData*>::ElementType>(EnemyTypeData[FMath::RandRange(0, EnemyTypeData.Max() - 1)]));
+			Enemies.Add(const_cast<TArray<FEnemyData*>::ElementType>(EnemyTypeData[FMath::RandRange(0, EnemyTypeData.Max() - 1)]));
 			if(FMath::RandRange(0,1) == 0)
 			{
 				float xPos = FMath::RandRange( PlayerLocation.X - MinOffset,
@@ -45,7 +44,7 @@ void UEnemySpawnerComponent::MeshSetup()
 				float yPos = FMath::RandRange( PlayerLocation.Y - MinOffset,
 					 PlayerLocation.Y - MaxOffset );
 				FVector3d newLocation =  FVector3d(xPos,yPos, UGameplayStatics::GetPlayerPawn(this, 0)->GetActorLocation().Z);
-				DataManager->LivingEnemiesData[i]->Position = newLocation;
+				Enemies[i]->Position = newLocation;
 			}
 			else
 			{
@@ -54,7 +53,7 @@ void UEnemySpawnerComponent::MeshSetup()
 				float yPos = FMath::RandRange( PlayerLocation.Y + MinOffset,
 					 PlayerLocation.Y + MaxOffset );
 				FVector3d newLocation =  FVector3d(xPos,yPos, PlayerLocation.Z);
-				DataManager->LivingEnemiesData[i]->Position = newLocation;
+				Enemies[i]->Position = newLocation;
 			}
 		}
 		SpawnStaticMesh();
@@ -65,16 +64,18 @@ void UEnemySpawnerComponent::SpawnStaticMesh()
 	Super::SpawnStaticMesh();
 	if (!DataManager)DataManager = GEngine->GetEngineSubsystem<UDataManager>();
 	TArray<FTransform> Transforms;
-	if (DataManager->LivingEnemiesData.Max() > 0)
+	if (Enemies.Max() > 0)
 	{
-		for (int i = 0; i < DataManager->LivingEnemiesData.Max()-1; i++)
+		for (FEnemyData* EnemyData : Enemies)
 		{
-			if (DataManager->LivingEnemiesData[i]->EnemyMesh)
-			{
-				InstancedStaticMeshComponent->SetStaticMesh(DataManager->LivingEnemiesData[i]->EnemyMesh);
-				InstancedStaticMeshComponent->AddInstance(FTransform(DataManager->LivingEnemiesData[i]->Position), false);
-			}
+			InstancedStaticMeshComponent->SetStaticMesh(EnemyData->EnemyMesh);
+			InstancedStaticMeshComponent->AddInstance(FTransform(EnemyData->Position), false);
 		}
+		/*for (int i = 0; i < Enemies.Max(); ++i)
+		{
+			InstancedStaticMeshComponent->SetStaticMesh(Enemies[i]->EnemyMesh);
+			InstancedStaticMeshComponent->AddInstance(FTransform(Enemies[i]->Position), false);
+		}*/
 	}
 }
 
@@ -85,16 +86,16 @@ void UEnemySpawnerComponent::InstancedMeshesMovements(float DeltaTime)
 	{
 		FVector3d PlayerLocation = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0)->GetActorLocation();
 	
-		for (int32 i = 0; i < InstancedStaticMeshComponent->GetInstanceCount(); i++)
+		for (int32 i = 0; i < InstancedStaticMeshComponent->GetInstanceCount()-1; i++)
 		{
 			FTransform InstanceTransform;
 			InstancedStaticMeshComponent->GetInstanceTransform(i, InstanceTransform, true);
 
-			DataManager->LivingEnemiesData[i]->Position = InstanceTransform.GetLocation();
-			FVector Direction = (PlayerLocation - DataManager->LivingEnemiesData[i]->Position).GetSafeNormal();
+			Enemies[i]->Position = InstanceTransform.GetLocation();
+			FVector Direction = (PlayerLocation - Enemies[i]->Position).GetSafeNormal();
 
-			DataManager->LivingEnemiesData[i]->Position += Direction * DataManager->LivingEnemiesData[i]->Speed * DeltaTime;
-			InstanceTransform.SetLocation(DataManager->LivingEnemiesData[i]->Position);
+			Enemies[i]->Position += Direction * Enemies[i]->Speed * DeltaTime;
+			InstanceTransform.SetLocation(Enemies[i]->Position);
 		
 			InstancedStaticMeshComponent->UpdateInstanceTransform(
 				i,
