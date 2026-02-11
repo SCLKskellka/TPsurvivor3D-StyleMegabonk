@@ -3,6 +3,10 @@
 
 #include "DataManager.h"
 
+UDataManager::UDataManager()
+{
+}
+
 void UDataManager::Initialize(FSubsystemCollectionBase& Collection)
 {
 	Super::Initialize(Collection);
@@ -13,6 +17,10 @@ void UDataManager::Deinitialize()
 	Super::Deinitialize();
 }
 
-void UDataManager::CheckDamage()
+void UDataManager::UpdateEnemies(TArray<FEnemyData*> WaveData)
 {
+	for (int i = 0; i < WaveData.Max(); ++i)
+	{
+		Enemies[i] = *WaveData[i];
+	}
 }

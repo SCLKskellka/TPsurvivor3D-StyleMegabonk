@@ -4,8 +4,6 @@
 
 #include "CoreMinimal.h"
 #include "EnemyData.h"
-//#include "FPlayerData.h"
-#include "ProjectileData.h"
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "DataManager.generated.h"
 
@@ -13,19 +11,19 @@
  * 
  */
 UCLASS()
-class SURVIVOR3D_API UDataManager : public UEngineSubsystem 
+class SURVIVOR3D_API UDataManager : public UGameInstanceSubsystem
 {
 	GENERATED_BODY()
-	
 public:
-	TArray<FEnemyData*> LivingEnemiesData;
-	//TArray<FPlayerData*> PlayerData;
-	TArray<FProjectileData*> ProjectileDataList;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	TArray<FEnemyData> Enemies;
+	
+	UDataManager();
 	
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
 	virtual void Deinitialize() override;
-	UFUNCTION()
-	int GetLivingEnemiesDataSize() const {return LivingEnemiesData.Max();}
-	UFUNCTION()
-	void CheckDamage();
+	
+	void UpdateEnemies(TArray<FEnemyData*> WaveData);
+private:
+	
 };
