@@ -12,5 +12,7 @@ struct SURVIVOR3D_API FPlayerData : public FTableRowBase
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	float Health;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	float Range;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	float Damage;
 };

@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "DataManager.h"
 #include "Components/ActorComponent.h"
 #include "TargetingComponent.generated.h"
 
@@ -11,33 +12,17 @@ UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class SURVIVOR3D_API UTargetingComponent : public UActorComponent
 {
 	GENERATED_BODY()
-
 public:
-	// Sets default values for this component's properties
 	UTargetingComponent();
-
 protected:
-	// Called when the game starts
 	virtual void BeginPlay() override;
-
 public:
-	// Called every frame
+
+	//TObjectPtr<UDataManager> DataManager;
+	UPROPERTY(EditAnywhere)
+	USceneComponent* TargetingPivot;
+	
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType,
 							   FActorComponentTickFunction* ThisTickFunction) override;
-
-	UFUNCTION()
 	void RotateToTarget(FVector targetPosition);
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	float Radius;
-
-	UPROPERTY(EditAnywhere)
-	TArray<TEnumAsByte<EObjectTypeQuery>> TypesToFilter;
-	
-	UPROPERTY(EditAnywhere)
-	TArray<AActor*> ActorsToIgnore;
-
-	UPROPERTY(EditAnywhere)
-	TArray<AActor*> OverlappedActors;
-	
 };

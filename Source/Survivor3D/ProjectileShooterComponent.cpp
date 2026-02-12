@@ -3,6 +3,7 @@
 
 #include "ProjectileShooterComponent.h"
 #include "AProjectileBase.h"
+#include "DataManager.h"
 #include "Kismet/KismetMathLibrary.h"
 
 
@@ -21,7 +22,7 @@ UProjectileShooterComponent::UProjectileShooterComponent()
 void UProjectileShooterComponent::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &UProjectileShooterComponent::ShootAtLocation,3,true);
 }
 
 // Called every frame
@@ -29,14 +30,13 @@ void UProjectileShooterComponent::TickComponent(float DeltaTime, ELevelTick Tick
 												 FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-
 }
 
-void UProjectileShooterComponent::ShootAtLocation(FVector targetLocation)
+void UProjectileShooterComponent::ShootAtLocation() const
 {
-	FVector direction = (targetLocation - GetOwner()->GetActorLocation()).GetSafeNormal();
 	if (IsValid(Projectile))
 	{
+		FVector direction = (targetLocation - GetOwner()->GetActorLocation()).GetSafeNormal();
 		UWorld* World = GetOwner()->GetWorld();
 		if (IsValid(World))
 		{

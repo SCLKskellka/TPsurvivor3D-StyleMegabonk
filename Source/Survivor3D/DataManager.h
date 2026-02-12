@@ -15,7 +15,7 @@ class SURVIVOR3D_API UDataManager : public UGameInstanceSubsystem
 {
 	GENERATED_BODY()
 public:
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	TArray<FEnemyData> Enemies;
 	
 	UDataManager();

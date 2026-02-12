@@ -32,15 +32,17 @@ public:
 
 	UPROPERTY(EditAnywhere)
 	int ShotPower;
-
+	UPROPERTY(EditAnywhere)
+	FVector targetLocation;
 	UPROPERTY(EditAnywhere)
 	FTransform ProjectileSpawnOffset;
 	
 	UPROPERTY()
 	int projectileDamage;
+	FTimerHandle TimerHandle;
 
-	UFUNCTION()
-	void ShootAtLocation(FVector targetLocation);
+	UFUNCTION(BlueprintCallable)
+	void ShootAtLocation() const;
 
 
 };
